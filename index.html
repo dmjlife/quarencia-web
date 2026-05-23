@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quarencia — Practical Architecture of a Sovereign Life</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --gold: #a07840;
+                --gold-dim: #c4a472;
+                --gold-faint: rgba(160, 120, 64, 0.07);
+                --bg: #fafaf8;
+                --bg-card: #f4f2ee;
+                --bg-border: rgba(160, 120, 64, 0.18);
+                --text: #1a1814;
+                --text-muted: #6b6560;
+                --text-dim: #b0aaa2;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: "Inter", sans-serif;
+                font-weight: 300;
+                font-size: 16px;
+                line-height: 1.7;
+                overflow-x: hidden;
+            }
+
+            /* ── NAV ── */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 28px 60px;
+                background: linear-gradient(
+                    to bottom,
+                    rgba(250, 250, 248, 0.97) 0%,
+                    transparent 100%
+                );
+            }
+
+            .nav-logo {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 22px;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                color: var(--gold);
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 44px;
+                list-style: none;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+            .nav-links a:hover {
+                color: var(--gold);
+            }
+
+            /* ── HERO ── */
+            .hero {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 120px 40px 80px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hero-bg {
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 80% 60% at 50% 40%,
+                        rgba(160, 120, 64, 0.06) 0%,
+                        transparent 65%
+                    ),
+                    radial-gradient(
+                        ellipse 40% 40% at 20% 80%,
+                        rgba(160, 120, 64, 0.04) 0%,
+                        transparent 50%
+                    );
+            }
+
+            .hero-line {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 1px;
+                height: 80px;
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    var(--gold-dim)
+                );
+            }
+
+            .hero-eyebrow {
+                font-size: 11px;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 32px;
+                opacity: 0.85;
+            }
+
+            .hero-title {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(64px, 10vw, 130px);
+                font-weight: 300;
+                line-height: 0.95;
+                letter-spacing: -0.01em;
+                color: var(--text);
+                margin-bottom: 10px;
+            }
+
+            .hero-title em {
+                font-style: italic;
+                color: var(--gold);
+            }
+
+            .hero-tagline {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(17px, 2.5vw, 22px);
+                font-weight: 300;
+                font-style: italic;
+                color: var(--text-muted);
+                margin-top: 28px;
+                letter-spacing: 0.04em;
+                max-width: 500px;
+            }
+
+            .hero-divider {
+                width: 48px;
+                height: 1px;
+                background: var(--gold-dim);
+                margin: 48px auto;
+            }
+
+            .hero-sub {
+                font-size: 14px;
+                letter-spacing: 0.06em;
+                color: var(--text-muted);
+                max-width: 440px;
+                line-height: 1.8;
+            }
+
+            .hero-cta {
+                margin-top: 56px;
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn-primary {
+                padding: 14px 40px;
+                border: 1px solid var(--gold);
+                color: var(--gold);
+                background: transparent;
+                font-family: "Inter", sans-serif;
+                font-size: 11px;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                text-decoration: none;
+                cursor: pointer;
+                transition:
+                    background 0.3s,
+                    color 0.3s;
+            }
+
+            .btn-primary:hover {
+                background: var(--gold);
+                color: #fafaf8;
+            }
+
+            .btn-ghost {
+                font-size: 11px;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transition: color 0.3s;
+            }
+
+            .btn-ghost:hover {
+                color: var(--text-muted);
+            }
+
+            .btn-ghost::after {
+                content: "";
+                display: inline-block;
+                width: 24px;
+                height: 1px;
+                background: currentColor;
+            }
+
+            /* ── SCROLL INDICATOR ── */
+            .scroll-hint {
+                position: absolute;
+                bottom: 40px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                color: var(--text-dim);
+                font-size: 10px;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+            }
+
+            .scroll-line {
+                width: 1px;
+                height: 40px;
+                background: linear-gradient(
+                    to bottom,
+                    var(--text-dim),
+                    transparent
+                );
+                animation: pulse-line 2s ease-in-out infinite;
+            }
+
+            @keyframes pulse-line {
+                0%,
+                100% {
+                    opacity: 0.3;
+                }
+                50% {
+                    opacity: 1;
+                }
+            }
+
+            /* ── SECTION SHARED ── */
+            section {
+                padding: 120px 60px;
+            }
+
+            .section-label {
+                font-size: 10px;
+                letter-spacing: 0.24em;
+                text-transform: uppercase;
+                color: var(--gold);
+                opacity: 0.7;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .section-label::before {
+                content: "";
+                display: inline-block;
+                width: 32px;
+                height: 1px;
+                background: var(--gold-dim);
+            }
+
+            .section-title {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(36px, 5vw, 58px);
+                font-weight: 400;
+                line-height: 1.1;
+                letter-spacing: -0.01em;
+                color: var(--text);
+            }
+
+            .section-title em {
+                font-style: italic;
+                color: var(--gold);
+            }
+
+            /* ── QUOTE SECTION ── */
+            .quote-section {
+                position: relative;
+                padding: 160px 20px;
+                display: flex;
+                justify-content: center;
+                overflow: hidden;
+            }
+
+            .quote-bg {
+                position: absolute;
+                inset: 0;
+                background-image: url('./images/ernest.webp');
+                background-size: cover;
+                background-position: center 25%;
+                opacity: 0.20;
+                mix-blend-mode: luminosity;
+                filter: grayscale(100%) contrast(1.2);
+                -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+                mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .quote-inner {
+                max-width: 900px;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+            }
+
+            .quote-inner::before {
+                content: "\201C";
+                position: absolute;
+                top: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-family: "Cormorant Garamond", serif;
+                font-size: 200px;
+                line-height: 1;
+                color: var(--gold-dim);
+                opacity: 0.25;
+                pointer-events: none;
+            }
+
+            .quote-text {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(20px, 3vw, 28px);
+                font-weight: 300;
+                font-style: italic;
+                line-height: 1.6;
+                color: var(--text);
+                position: relative;
+                z-index: 1;
+            }
+
+            .quote-attribution {
+                margin-top: 36px;
+                font-size: 11px;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+            }
+
+            .quote-attribution span {
+                color: var(--gold);
+                opacity: 0.7;
+            }
+
+            /* ── CONCEPT SECTION ── */
+            .concept-section {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+                max-width: 1200px;
+                margin: 0 auto;
+                align-items: center;
+            }
+
+            .concept-body {
+                font-size: 15px;
+                color: var(--text-muted);
+                line-height: 1.9;
+            }
+
+            .concept-body p + p {
+                margin-top: 20px;
+            }
+
+            .concept-body strong {
+                color: var(--text);
+                font-weight: 400;
+            }
+
+            .concept-visual {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .origin-card {
+                border: 1px solid var(--bg-border);
+                background: var(--bg-card);
+                padding: 48px;
+                position: relative;
+            }
+
+            .origin-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 40px;
+                height: 1px;
+                background: var(--gold);
+            }
+
+            .origin-word {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 48px;
+                font-weight: 300;
+                color: var(--gold);
+                letter-spacing: 0.04em;
+                margin-bottom: 6px;
+            }
+
+            .origin-lang {
+                font-size: 10px;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin-bottom: 24px;
+            }
+
+            .origin-def {
+                font-size: 14px;
+                color: var(--text-muted);
+                line-height: 1.8;
+                font-style: italic;
+            }
+
+            .origin-def em {
+                font-style: normal;
+                color: var(--text);
+            }
+
+            /* ── PILLARS ── */
+            .pillars-section {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .pillars-header {
+                margin-bottom: 80px;
+            }
+
+            .pillars-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+                background: var(--bg-border);
+            }
+
+            .pillar {
+                background: var(--bg);
+                padding: 56px 44px;
+                position: relative;
+                overflow: hidden;
+                transition: background 0.4s;
+            }
+
+            .pillar:hover {
+                background: var(--bg-card);
+            }
+
+            .pillar::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 44px;
+                width: 0;
+                height: 1px;
+                background: var(--gold);
+                transition: width 0.5s ease;
+            }
+
+            .pillar:hover::after {
+                width: calc(100% - 88px);
+            }
+
+            .pillar-number {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 64px;
+                font-weight: 300;
+                color: var(--text-dim);
+                line-height: 1;
+                margin-bottom: 32px;
+                transition: color 0.4s;
+            }
+
+            .pillar:hover .pillar-number {
+                color: var(--gold-dim);
+            }
+
+            .pillar-title {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 26px;
+                font-weight: 400;
+                color: var(--text);
+                margin-bottom: 16px;
+            }
+
+            .pillar-body {
+                font-size: 13.5px;
+                color: var(--text-muted);
+                line-height: 1.85;
+            }
+
+            .pillar-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                margin-top: 32px;
+                font-size: 10px;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+            .pillar-link:hover {
+                color: var(--gold);
+            }
+
+            .pillar-link::after {
+                content: "";
+                display: inline-block;
+                width: 20px;
+                height: 1px;
+                background: currentColor;
+                transition: width 0.3s;
+            }
+
+            .pillar-link:hover::after {
+                width: 32px;
+            }
+
+            /* ── MANIFESTO ── */
+            .manifesto-section {
+                padding: 120px 60px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .manifesto-bg {
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(
+                    ellipse 70% 80% at 50% 50%,
+                    rgba(160, 120, 64, 0.05) 0%,
+                    transparent 60%
+                );
+                pointer-events: none;
+            }
+
+            .manifesto-inner {
+                max-width: 720px;
+                margin: 0 auto;
+                text-align: center;
+                position: relative;
+            }
+
+            .manifesto-title {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(38px, 6vw, 68px);
+                font-weight: 300;
+                line-height: 1.1;
+                color: var(--text);
+                margin-bottom: 48px;
+            }
+
+            .manifesto-title em {
+                font-style: italic;
+                color: var(--gold);
+            }
+
+            .manifesto-body {
+                font-size: 15px;
+                color: var(--text-muted);
+                line-height: 1.95;
+            }
+
+            .manifesto-body p + p {
+                margin-top: 22px;
+            }
+
+            .manifesto-body strong {
+                color: var(--text);
+                font-weight: 400;
+            }
+
+            /* ── HOW IT WORKS ── */
+            .how-section {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            .how-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+                margin-top: 80px;
+            }
+
+            .how-item {
+                display: flex;
+                gap: 28px;
+            }
+
+            .how-index {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 48px;
+                font-weight: 300;
+                color: var(--text-dim);
+                line-height: 1;
+                flex-shrink: 0;
+            }
+
+            .how-content {
+            }
+
+            .how-title {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 22px;
+                font-weight: 400;
+                color: var(--text);
+                margin-bottom: 10px;
+            }
+
+            .how-body {
+                font-size: 13.5px;
+                color: var(--text-muted);
+                line-height: 1.85;
+            }
+
+            /* ── CTA BAND ── */
+            .cta-band {
+                padding: 100px 60px;
+                text-align: center;
+                border-top: 1px solid var(--bg-border);
+                position: relative;
+            }
+
+            .cta-band::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 1px;
+                height: 60px;
+                background: linear-gradient(
+                    to bottom,
+                    var(--gold-dim),
+                    transparent
+                );
+            }
+
+            .cta-headline {
+                font-family: "Cormorant Garamond", serif;
+                font-size: clamp(32px, 5vw, 54px);
+                font-weight: 300;
+                color: var(--text);
+                margin-bottom: 20px;
+            }
+
+            .cta-sub {
+                font-size: 14px;
+                color: var(--text-muted);
+                margin-bottom: 48px;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .email-form {
+                display: flex;
+                gap: 0;
+                max-width: 440px;
+                margin: 0 auto;
+            }
+
+            .email-input {
+                flex: 1;
+                background: var(--bg-card);
+                border: 1px solid var(--bg-border);
+                border-right: none;
+                color: var(--text);
+                padding: 14px 20px;
+                font-family: "Inter", sans-serif;
+                font-size: 13px;
+                outline: none;
+                transition: border-color 0.3s;
+            }
+
+            .email-input::placeholder {
+                color: var(--text-dim);
+            }
+
+            .email-input:focus {
+                border-color: var(--gold-dim);
+            }
+
+            .email-submit {
+                background: var(--gold);
+                border: 1px solid var(--gold);
+                color: #fafaf8;
+                padding: 14px 28px;
+                font-family: "Inter", sans-serif;
+                font-size: 11px;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: opacity 0.3s;
+            }
+
+            .email-submit:hover {
+                opacity: 0.85;
+            }
+
+            /* ── FOOTER ── */
+            footer {
+                padding: 48px 60px;
+                border-top: 1px solid var(--bg-border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .footer-brand {
+                font-family: "Cormorant Garamond", serif;
+                font-size: 18px;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--gold);
+                opacity: 0.7;
+            }
+
+            .footer-copy {
+                font-size: 11px;
+                letter-spacing: 0.08em;
+                color: var(--text-dim);
+            }
+
+            .footer-links {
+                display: flex;
+                gap: 32px;
+                list-style: none;
+            }
+
+            .footer-links a {
+                font-size: 11px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+            .footer-links a:hover {
+                color: var(--text-muted);
+            }
+
+            /* ── HORIZONTAL RULE ── */
+            .rule {
+                width: 100%;
+                height: 1px;
+                background: var(--bg-border);
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            /* ── FADE IN ── */
+            .fade-in {
+                opacity: 0;
+                transform: translateY(24px);
+                transition:
+                    opacity 0.8s ease,
+                    transform 0.8s ease;
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* ── RESPONSIVE ── */
+            @media (max-width: 900px) {
+                nav {
+                    padding: 24px 28px;
+                }
+                .nav-links {
+                    gap: 28px;
+                }
+                section {
+                    padding: 80px 28px;
+                }
+                .concept-section {
+                    grid-template-columns: 1fr;
+                    gap: 48px;
+                }
+                .pillars-grid {
+                    grid-template-columns: 1fr;
+                }
+                .how-grid {
+                    grid-template-columns: 1fr;
+                    gap: 40px;
+                }
+                footer {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 40px 28px;
+                }
+                .quote-section {
+                    padding: 80px 28px;
+                }
+                .manifesto-section {
+                    padding: 80px 28px;
+                }
+                .cta-band {
+                    padding: 80px 28px;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .nav-links {
+                    display: none;
+                }
+                .hero-title {
+                    font-size: 56px;
+                }
+                .email-form {
+                    flex-direction: column;
+                    gap: 8px;
+                }
+                .email-input {
+                    border-right: 1px solid var(--bg-border);
+                }
+            }
+        </style>
+        <link rel="icon" type="image/png" href="./images/quarencia_icon.png" />
+    </head>
+    <body>
+        <!-- NAV -->
+        <nav>
+            <div
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 5px;
+                "
+            >
+                <img style="height: 35px" src="./images/icon.jpg" /><a
+                    href="#"
+                    class="nav-logo"
+                    >Quarencia</a
+                >
+            </div>
+            <ul class="nav-links">
+                <li><a href="#concept">The Concept</a></li>
+                <li><a href="#pillars">Pillars</a></li>
+                <li><a href="#philosophy">Philosophy</a></li>
+                <li><a href="#join">Join</a></li>
+            </ul>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-line"></div>
+
+            <p class="hero-eyebrow fade-in">
+                Practical Architecture of a Sovereign Life
+            </p>
+
+            <h1 class="hero-title fade-in">Quar<em>encia</em></h1>
+
+            <p class="hero-tagline fade-in">
+                Your refuge. Your power. Your unassailable ground.
+            </p>
+
+            <div class="hero-divider fade-in"></div>
+
+            <p class="hero-sub fade-in">
+                In an ever-tightening world, the truly sovereign few know where
+                they stand. They invest wisely. They move unseen. They cannot be
+                dislodged.
+            </p>
+
+            <div class="hero-cta fade-in">
+                <a href="#join" class="btn-primary">Enter</a>
+                <a href="#concept" class="btn-ghost">The philosophy</a>
+            </div>
+
+            <div class="scroll-hint">
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- QUOTE -->
+        <div class="quote-section fade-in">
+            <div class="quote-bg"></div>
+            <div class="quote-inner">
+                <p class="quote-text">
+                    "A querencia is a place the bull naturally wants to go to in the
+                    ring, a preferred locality... In this place he feels that he has
+                    his back against the wall and in his querencia he is inestimably
+                    more dangerous and almost impossible to kill."
+                </p>
+                <p class="quote-attribution">
+                    <span>Ernest Hemingway</span> &nbsp;·&nbsp; Death in the
+                    Afternoon
+                </p>
+            </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <!-- CONCEPT -->
+        <section id="concept">
+            <div class="concept-section">
+                <div class="concept-left fade-in">
+                    <p class="section-label">The Origin</p>
+                    <h2 class="section-title">
+                        A metaphysical<br /><em>sanctuary</em>
+                    </h2>
+                    <div class="concept-body" style="margin-top: 36px">
+                        <p>
+                            <strong>Querencia</strong> is a Spanish noun
+                            describing a place where one feels completely at
+                            home — a refuge from which you draw profound
+                            emotional strength. Not merely comfort, but a
+                            ground-level certainty of self.
+                        </p>
+                        <p>
+                            We have taken this ancient idea and given it
+                            practical form.
+                            <strong>Quarencia</strong> is the discipline of
+                            constructing that place — not merely as a feeling,
+                            but as a lived architecture: financial, legal,
+                            digital, and physical.
+                        </p>
+                        <p>
+                            The world extracts. Systems erode. Complexity is
+                            weaponised. The sovereign individual responds not
+                            with opposition, but with
+                            <strong>elegant, impenetrable design</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="concept-visual fade-in">
+                    <div class="origin-card">
+                        <div class="origin-word">Querencia</div>
+                        <div class="origin-lang">
+                            Spanish · Metaphysical noun
+                        </div>
+                        <div class="origin-def">
+                            <em>A place from which one's strength is drawn.</em
+                            ><br /><br />
+                            Where one feels safe, at home, and from which they
+                            draw emotional and spiritual power. The place a
+                            being returns to when it must be at its most
+                            formidable.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="rule"></div>
+
+        <!-- PILLARS -->
+        <section id="pillars" style="padding: 120px 60px">
+            <div class="pillars-section">
+                <div class="pillars-header fade-in">
+                    <p class="section-label">The Architecture</p>
+                    <h2 class="section-title">
+                        Three pillars of<br /><em>sovereign design</em>
+                    </h2>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar fade-in">
+                        <div class="pillar-number">I</div>
+                        <h3 class="pillar-title">Sovereign Capital</h3>
+                        <p class="pillar-body">
+                            Most people hand their financial future to systems
+                            designed to extract from them. Sovereign capital
+                            means knowing where every unit of value lives, how
+                            it compounds, and how it remains yours — through
+                            volatility, systemic pressure, and time.
+                            <br /><br />
+                            Investment strategy, asset allocation, hard money,
+                            and the architecture of generational wealth — built
+                            on your terms.
+                        </p>
+                        <a href="#" class="pillar-link">Explore</a>
+                    </div>
+
+                    <div class="pillar fade-in">
+                        <div class="pillar-number">II</div>
+                        <h3 class="pillar-title">Operational Security</h3>
+                        <p class="pillar-body">
+                            Security is not paranoia. It is the quiet discipline
+                            of those who understand that exposure is risk, and
+                            risk compounds. From personal OPSEC to physical
+                            security architecture — your home, your movements,
+                            your perimeter.
+                            <br /><br />
+                            Know your threat model. Design around it. Live
+                            without the low-grade anxiety of the perpetually
+                            exposed.
+                        </p>
+                        <a href="#" class="pillar-link">Explore</a>
+                    </div>
+
+                    <div class="pillar fade-in">
+                        <div class="pillar-number">III</div>
+                        <h3 class="pillar-title">Digital Sovereignty</h3>
+                        <p class="pillar-body">
+                            Privacy is not a luxury — it is the modern
+                            prerequisite of freedom. Every interaction,
+                            purchase, and communication leaves a record for
+                            systems you did not consent to join.
+                            <br /><br />
+                            Tools, protocols, and habits for those who choose to
+                            exist on their own terms. Encrypted communications,
+                            clean digital infrastructure, and a life that cannot
+                            easily be read.
+                        </p>
+                        <a href="#" class="pillar-link">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="rule"></div>
+
+        <!-- MANIFESTO -->
+        <section id="philosophy" class="manifesto-section">
+            <div class="manifesto-bg"></div>
+            <div class="manifesto-inner">
+                <div class="fade-in">
+                    <p class="section-label" style="justify-content: center">
+                        The Question
+                    </p>
+                </div>
+                <h2 class="manifesto-title fade-in">
+                    How do we retain<br />power and control<br />in an
+                    <em>ever-oppressive</em> world?
+                </h2>
+                <div class="manifesto-body fade-in">
+                    <p>
+                        The systems that surround us — financial, governmental,
+                        digital — are not neutral. They are architectures of
+                        extraction, designed to concentrate power upward and
+                        create dependency downward.
+                    </p>
+                    <p>
+                        <strong>Most people are never taught this.</strong> They
+                        are taught to participate, to trust, to defer. And in
+                        that deferral, they slowly cede the ground from which
+                        they might otherwise fight.
+                    </p>
+                    <p>
+                        Quarencia is for those who have noticed. Who feel the
+                        slow compression. Who want to understand it and, more
+                        importantly, build something that cannot be compressed —
+                        a life, a structure, a philosophy with
+                        <strong>its back against the wall</strong>.
+                    </p>
+                    <p>Most dangerous. Almost impossible to kill.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="rule"></div>
+
+        <!-- HOW IT WORKS -->
+        <section style="padding: 120px 60px">
+            <div class="how-section">
+                <div class="fade-in">
+                    <p class="section-label">How We Work</p>
+                    <h2 class="section-title">
+                        Practical knowledge.<br /><em
+                            >Immediate application.</em
+                        >
+                    </h2>
+                </div>
+
+                <div class="how-grid">
+                    <div class="how-item fade-in">
+                        <div class="how-index">01</div>
+                        <div class="how-content">
+                            <h3 class="how-title">Deep Research</h3>
+                            <p class="how-body">
+                                We investigate, pressure-test, and distil. No
+                                filler. No affiliates. Only actionable
+                                intelligence on investments, security, and
+                                privacy that genuinely moves the needle.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="how-item fade-in">
+                        <div class="how-index">02</div>
+                        <div class="how-content">
+                            <h3 class="how-title">Structured Frameworks</h3>
+                            <p class="how-body">
+                                Every domain — capital, security, privacy —
+                                broken into layered frameworks. Know what to
+                                build first, what to build next, and how the
+                                pieces interlock.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="how-item fade-in">
+                        <div class="how-index">03</div>
+                        <div class="how-content">
+                            <h3 class="how-title">Private Community</h3>
+                            <p class="how-body">
+                                Access to a carefully curated network of people
+                                doing the work. Not a forum — a room. Where real
+                                conversations happen about real strategy.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="how-item fade-in">
+                        <div class="how-index">04</div>
+                        <div class="how-content">
+                            <h3 class="how-title">Evolving Intelligence</h3>
+                            <p class="how-body">
+                                The world changes fast. Threats shift.
+                                Opportunities appear and close. Quarencia
+                                members receive ongoing updates as the landscape
+                                moves — so your architecture stays current.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="rule"></div>
+
+        <!-- CTA -->
+        <section id="join" class="cta-band">
+            <h2 class="cta-headline fade-in">Find your ground.</h2>
+            <p class="cta-sub fade-in">
+                Early access for those building their sovereign architecture. No
+                noise. No compromise.
+            </p>
+            <form class="email-form fade-in" onsubmit="return false;">
+                <input
+                    type="email"
+                    class="email-input"
+                    placeholder="Your email address"
+                    autocomplete="off"
+                />
+                <button type="submit" class="email-submit">
+                    Request Access
+                </button>
+            </form>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-brand">Quarencia</div>
+            <ul class="footer-links">
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <p class="footer-copy">© 2026 Quarencia. All rights reserved.</p>
+        </footer>
+
+        <script>
+            // Fade-in on scroll
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+            );
+
+            document
+                .querySelectorAll(".fade-in")
+                .forEach((el) => observer.observe(el));
+
+            // Stagger hero animations
+            const heroEls = document.querySelectorAll(".hero .fade-in");
+            heroEls.forEach((el, i) => {
+                el.style.transitionDelay = `${i * 0.14}s`;
+                setTimeout(() => el.classList.add("visible"), 100 + i * 140);
+            });
+        </script>
+    </body>
+</html>
